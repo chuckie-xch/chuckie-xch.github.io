@@ -10,8 +10,7 @@
 
     <!--Description-->
     
-        <meta name="description" content="深入理解JavaScript中的闭包什么是闭包？闭包是词法作用域的体现。简单的说，一个持有外部环境变量的函数就是闭包。闭包的本质是词法作用域和函数当作值传递。
-词法作用域是只作用域在代码书写或定义的时候就确定的，而动态作用域是在代码执行的时候确定的。词法作用域关注的是何处声明，动态作用域关注的是何处">
+        <meta name="description" content="maven导入本地jar导致NoClassDefFoundError方法一将jar包打包到本地仓库12345mvn install:install-file -Dfile=D:/internetenv/myLib/alipay/alipay-trade-sdk.jar -DgroupId=com.a">
     
 
     <!--Author-->
@@ -21,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="理解JavaScript中的闭包"/>
+        <meta property="og:title" content="maven导入本地jar导致NoClassDefFoundError"/>
     
 
     <!--Open Graph Description-->
@@ -43,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>理解JavaScript中的闭包 - Hexo</title>
+    <title>maven导入本地jar导致NoClassDefFoundError - Hexo</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -111,14 +110,14 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">理解JavaScript中的闭包</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-11-27</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">maven导入本地jar导致NoClassDefFoundError</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-11-30</p>
         </div>
     </div>
 
     <!-- Icon -->
     <div class="relative w-100 mw8 center white dn dn-m db-ns">
-        <i class="header-icon fa fa-code"></i>
+        <i class="header-icon fa fa-file-text-o"></i>
     </div>
 </div>
 
@@ -132,24 +131,20 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                                <a class="fw3 ph1 dib" href="/tags/Java异常/">#Java异常</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="深入理解JavaScript中的闭包"><a href="#深入理解JavaScript中的闭包" class="headerlink" title="深入理解JavaScript中的闭包"></a>深入理解JavaScript中的闭包</h1><h2 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h2><p><strong>闭包</strong>是词法作用域的体现。简单的说，一个持有外部环境变量的函数就是闭包。闭包的本质是词法作用域和函数当作值传递。</p>
-<p><strong>词法作用域</strong>是只作用域在代码书写或定义的时候就确定的，而动态作用域是在代码执行的时候确定的。词法作用域关注的是<strong>何处声明</strong>，动态作用域关注的是<strong>何处调用</strong>。</p>
-<p>看下面代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   print a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">    foo();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">bar();</span><br></pre></td></tr></table></figure></p>
-<p>上述代码词法作用域语言中输出的是2，比如Js中，在动态作用域语言中输出的是3。</p>
-<p>我们再来看看闭包的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> local = <span class="number">2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> local;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> inner;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn = outer();</span><br><span class="line"><span class="built_in">console</span>.log(fn());</span><br></pre></td></tr></table></figure></p>
-<p>上面的例子中外部函数outer中定义了内部函数inner，然后将inner函数对象作为值返回。之后执行了outer()函数，在js中outer函数的作用域会被销毁，因为引擎会有垃圾回收器来释放不在使用的内存。<br>因为这里将函数作为返回值了，产生了闭包，因为闭包的存在，我们依然能够访问到local变量，所有outer的词法作用域依然存在。因此也就证明了，<strong>闭包可访问所在的词法作用域并且拥有更长的生命周期，保持对当前词法作用域的引用。</strong></p>
-
+                    <h1 id="maven导入本地jar导致NoClassDefFoundError"><a href="#maven导入本地jar导致NoClassDefFoundError" class="headerlink" title="maven导入本地jar导致NoClassDefFoundError"></a>maven导入本地jar导致NoClassDefFoundError</h1><p><strong>方法一</strong><br>将jar包打包到本地仓库<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -Dfile=D:/internetenv/myLib/alipay/alipay-trade-sdk.jar -DgroupId=com.alibaba -DartifactId=aliPayDemo -Dversion=<span class="number">2.0</span> -Dpackaging=jar</span><br><span class="line"></span><br><span class="line">mvn install:install-file -Dfile=D:/internetenv/myLib/alipay/alipay-sdk-java20160302220055.jar -DgroupId=com.alibaba -DartifactId=aliPay -Dversion=<span class="number">2.0</span> -Dpackaging=jar</span><br><span class="line"></span><br><span class="line">mvn install:install-file -Dfile=D:/internetenv/system/lib/wxpay-scanpay-java-sdk-<span class="number">1.0</span>.jar -DgroupId=com.tencent -DartifactId=wxpay-scanpay-java-sdk -Dversion=<span class="number">1.0</span> -Dpackaging=jar</span><br></pre></td></tr></table></figure></p>
+<p><strong>方法二</strong><br>配置Maven插件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;copy-dependencies&lt;/id&gt;</span><br><span class="line">            &lt;phase&gt;compile&lt;/phase&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;copy-dependencies&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;outputDirectory&gt;$&#123;project.build.directory&#125;/$&#123;project.build.finalName&#125;/WEB-INF/lib&lt;/outputDirectory&gt;</span><br><span class="line">                &lt;includeScope&gt;system&lt;/includeScope&gt;</span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Java异常/">#Java异常</a>
                         </div>
                     
 
