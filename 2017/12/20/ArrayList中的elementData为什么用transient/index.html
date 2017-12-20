@@ -10,8 +10,7 @@
 
     <!--Description-->
     
-        <meta name="description" content="深入理解JavaScript中的闭包什么是闭包？闭包是词法作用域的体现。简单的说，一个持有外部环境变量的函数就是闭包。闭包的本质是词法作用域和函数当作值传递。
-词法作用域是只作用域在代码书写或定义的时候就确定的，而动态作用域是在代码执行的时候确定的。词法作用域关注的是何处声明，动态作用域关注的是何处">
+        <meta name="description" content="ArrayList中elementData数组为什么是transientjava中的transient关键字Java中serialization提供了一种持久化实例对象的机制。有可能有个对象的成员我们不想用serialization机制来保存它。就可以在这个成员变量上加上关键字transient。t">
     
 
     <!--Author-->
@@ -21,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="理解JavaScript中的闭包"/>
+        <meta property="og:title" content="ArrayList中的elementData为什么用transient"/>
     
 
     <!--Open Graph Description-->
@@ -43,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>理解JavaScript中的闭包 - 夏天的博客</title>
+    <title>ArrayList中的elementData为什么用transient - 夏天的博客</title>
 
     <!-- Tachyons Core CSS -->
     <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
@@ -111,14 +110,14 @@
     <!-- Title -->
     <div class="w-100 mw8 center vh-40 dt">
         <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">理解JavaScript中的闭包</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-11-27</p>
+            <h1 class="f1-l f2-m tc tc-m tl-ns">ArrayList中的elementData为什么用transient</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2017-12-20</p>
         </div>
     </div>
 
     <!-- Icon -->
     <div class="relative w-100 mw8 center white dn dn-m db-ns">
-        <i class="header-icon fa fa-code"></i>
+        <i class="header-icon fa fa-bolt"></i>
     </div>
 </div>
 
@@ -132,24 +131,21 @@
                     
                         <div class="tags-container-vertical">
                             <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                                <a class="fw3 ph1 dib" href="/tags/Java源码/">#Java源码</a>
                             </div>
                         </div>
                     
 
                     <!-- Main Post Content -->
-                    <h1 id="深入理解JavaScript中的闭包"><a href="#深入理解JavaScript中的闭包" class="headerlink" title="深入理解JavaScript中的闭包"></a>深入理解JavaScript中的闭包</h1><h2 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h2><p><strong>闭包</strong>是词法作用域的体现。简单的说，一个持有外部环境变量的函数就是闭包。闭包的本质是词法作用域和函数当作值传递。</p>
-<p><strong>词法作用域</strong>是只作用域在代码书写或定义的时候就确定的，而动态作用域是在代码执行的时候确定的。词法作用域关注的是<strong>何处声明</strong>，动态作用域关注的是<strong>何处调用</strong>。</p>
-<p>看下面代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   print a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">    foo();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">bar();</span><br></pre></td></tr></table></figure></p>
-<p>上述代码词法作用域语言中输出的是2，比如Js中，在动态作用域语言中输出的是3。</p>
-<p>我们再来看看闭包的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> local = <span class="number">2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> local;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> inner;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn = outer();</span><br><span class="line"><span class="built_in">console</span>.log(fn());</span><br></pre></td></tr></table></figure></p>
-<p>上面的例子中外部函数outer中定义了内部函数inner，然后将inner函数对象作为值返回。之后执行了outer()函数，在js中outer函数的作用域会被销毁，因为引擎会有垃圾回收器来释放不在使用的内存。<br>因为这里将函数作为返回值了，产生了闭包，因为闭包的存在，我们依然能够访问到local变量，所有outer的词法作用域依然存在。因此也就证明了，<strong>闭包可访问所在的词法作用域并且拥有更长的生命周期，保持对当前词法作用域的引用。</strong></p>
+                    <h1 id="ArrayList中elementData数组为什么是transient"><a href="#ArrayList中elementData数组为什么是transient" class="headerlink" title="ArrayList中elementData数组为什么是transient"></a>ArrayList中elementData数组为什么是transient</h1><h2 id="java中的transient关键字"><a href="#java中的transient关键字" class="headerlink" title="java中的transient关键字"></a>java中的transient关键字</h2><p>Java中serialization提供了一种持久化实例对象的机制。有可能有个对象的成员我们不想用serialization机制来保存它。就可以在这个成员变量上加上关键字transient。<br><strong>transient</strong>是Java中的关键字，用来表示一个域不是该对象串行化的一部分。</p>
+<h2 id="ArrayList中elementData用transient的原因"><a href="#ArrayList中elementData用transient的原因" class="headerlink" title="ArrayList中elementData用transient的原因"></a>ArrayList中elementData用<strong>transient</strong>的原因</h2><p>elementData数组是实现ArrayList的关键数据结构。但数组中的元素往往大于我们真实存储的数据，当容量不够时会继续扩容。如果将elementData串行化，会导致空间的浪费。所以ArrayList的设计者将elementData设计为transient,然后再<strong>writeObject</strong>方法中手动进行序列化，只序列互实际存储的那些元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Save the state of the &lt;tt&gt;ArrayList&lt;/tt&gt; instance to a stream (that</span></span><br><span class="line"><span class="comment">  * is, serialize it).</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@serialData</span> The length of the array backing the &lt;tt&gt;ArrayList&lt;/tt&gt;</span></span><br><span class="line"><span class="comment">  *             instance is emitted (int), followed by all of its elements</span></span><br><span class="line"><span class="comment">  *             (each an &lt;tt&gt;Object&lt;/tt&gt;) in the proper order.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(java.io.ObjectOutputStream s)</span></span></span><br><span class="line"><span class="function">     <span class="keyword">throws</span> java.io.IOException</span>&#123;</span><br><span class="line">     <span class="comment">// Write out element count, and any hidden stuff</span></span><br><span class="line">     <span class="keyword">int</span> expectedModCount = modCount;</span><br><span class="line">     s.defaultWriteObject();</span><br><span class="line"></span><br><span class="line">     <span class="comment">// Write out size as capacity for behavioural compatibility with clone()</span></span><br><span class="line">     s.writeInt(size);</span><br><span class="line"></span><br><span class="line">     <span class="comment">// Write out all elements in the proper order.</span></span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) &#123;</span><br><span class="line">         s.writeObject(elementData[i]);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (modCount != expectedModCount) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
                     
                     <!-- Tags Bottom -->
                     
                         <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/JavaScript/">#JavaScript</a>
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/Java源码/">#Java源码</a>
                         </div>
                     
 
