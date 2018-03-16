@@ -1,0 +1,66 @@
+# language: node_js
+# node_js: stable
+# # assign build branches
+# branches:
+#   only:
+#     - source
+# # cache this directory
+# cache:
+#   directories:
+#     - node_modules
+# # S: Build Lifecycle
+# before_install:
+#   - openssl aes-256-cbc -K $encrypted_a0b7f0848317_key -iv $encrypted_a0b7f0848317_iv -in ./.travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+#   - chmod 600 ~/.ssh/id_rsa
+#   - eval $(ssh-agent)
+#   - ssh-add ~/.ssh/id_rsa
+#   - cp .travis/ssh_config ~/.ssh/config
+#   - npm install -g hexo-cli # 安装 hexo
+#   - git clone -b mod https://github.com/quentin-chen/hexo-theme-even.git themes/even
+# install:
+#   - npm install # 安装 package.json 中的插件
+# script:
+#   - hexo generate
+# after_success:
+#   - git config --global user.name "chuckie-xch"
+#   - git config --global user.email "1205241831@qq.com"
+#   - sed -i'' "/^ *repo/s~github\.com~${githubToken}@github.com~" _config.yml
+#   - hexo deploy
+# # E: Build LifeCycle
+language: node_js
+node_js: stable
+
+# Travis-CI Caching
+cache:
+  directories:
+    - node_modules
+
+
+# S: Build Lifecycle
+install:
+  - npm install
+
+before_script:
+ # - npm install -g gulp
+
+
+script:
+  - hexo g
+
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "chuckie-xch"
+  - git config user.email "1205241831@qq.com"
+  - git add .
+  - git commit -m "Update docs"
+  - git push --force --quiet "https://${CHUCKIE_BLOG_TOKEN}@${GH_REF}" master:master
+# E: Build LifeCycle
+
+branches:
+  only:
+    - source
+env:
+ global:
+   - GH_REF: github.com/chuckie-xch/chuckie-xch.github.io.git
