@@ -1,18 +1,14 @@
 ---
-title: SpringMVC源码分析
-date: 2018-03-15 18:34:52
-tags:
+title: SpringMVC上下文初始化
+date: 2018-03-12 18:34:52
+tags: Spring
 ---
 
-# SpringMVC源码分析
 
 
+**quick start**
 
-## Quick Start
-
-### pom中引入依赖
-
-<!-- more -->
+**在pom.xml中引入依赖**
 
 ```xml
 <dependency>
@@ -29,7 +25,7 @@ tags:
 </dependency>
 ```
 
-
+<!-- more -->
 
 ### 配置Web.xml和application.xml
 
