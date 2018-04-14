@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Redis主从复制 · 夏天的博客</title><meta name="description" content="Redis主从复制 - chuckie-xch"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.idlforever.cn/atom.xml" title="夏天的博客"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Redis主从复制</h1><div class="post-info">Mar 28, 2018</div><div class="post-content"><p>Redis是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，hyperloglogs等数据类型。内置复制、Lua脚本、LRU收回、事务以及不同级别磁盘持久化功能，同时通过Redis Sentinel提供高可用，通过Redis Cluster提供自动分区。</p>
+<a id="more"></a>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>持久化就是把内存中的数据写到磁盘中，防止服务宕机。</p>
+<ul>
+<li>RDB   (默认)</li>
+<li>AOF</li>
+</ul>
+<h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><p>RDB功能的核心函数<code>rdbSave</code>方法生成RDB文件，<code>rdbLoad</code>方法加载文件到内存。</p>
+<p><strong>rdbSave方法</strong>：将内存中的数据以RDB格式保存到磁盘中，如果文件已经存在，那么新的RDB文件将会覆盖已有的RDB文件。保存期间，主进程会被阻塞，知道保存完成。</p>
+<p><strong>save</strong>直接调用rdbSave，阻塞主线程。</p>
+<p><strong>bgSave</strong>则fork出一个子进程，调用rdbSave，并在保存完成后向主进程发送信号，通知保存完成。</p>
+<p><strong>存储结构：</strong></p>
+<p><strong>保存策略：</strong></p>
+<ul>
+<li>save  900   1</li>
+<li>save   300   10     // 300秒内容如果超过10个key被修改，则发起快照保存</li>
+<li>save  60  10000 </li>
+</ul>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>AOF是Append-only-file的缩写。</p>
+<p>服务器定时任务调用<code>flushAppendOnlyFile</code>函数，该函数完成下面两个工作：</p>
+<ul>
+<li><p>aof写入保存：</p>
+<ul>
+<li>write：根据条件，将<code>aof_buf</code>中的缓存写入到AOF文件</li>
+<li>save：根据条件，调用<code>fsync</code>或者<code>fdatasync</code>函数，将AOF文件保存到磁盘中。</li>
+</ul>
+</li>
+<li><p>保存策略：</p>
+<p>| 模式               | write是否阻塞 | save是否阻塞 | 停机时丢失数据量                |<br>| —————— | ————- | ———— | ——————————- |<br>| AOF_FSYNC_NO       | 阻塞          | 阻塞         | 最后一次对AOF进行save之后的数据 |<br>| AOF_FSYNC_EVERYSEC | 阻塞          | 不阻塞       | 不超过2秒钟的数据               |<br>| AOF_FSYNC_ALWAYS   | 阻塞          | 阻塞         | 丢失一个命令的数据              |</p>
+</li>
+</ul>
+<p><strong>存储结构：</strong></p>
+<p>内容是Redis通讯协议（RESP）格式的命令文本存储。</p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p>通常为被复制方（master）主动向复制方（slave）发送数据，主要目的是为了保证双方数据一致性，做备份容灾，并且分摊master的压力。</p>
+<h4 id="主从复制实战"><a href="#主从复制实战" class="headerlink" title="主从复制实战"></a>主从复制实战</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cp redis.conf redis-slave1.conf</span><br><span class="line">vim redis-slave1.conf</span><br><span class="line">/slaveof         # 搜索到slaveof</span><br><span class="line">slaveof 127.0.0.1 6379     # master ip及端口</span><br><span class="line">/port 6379    # 搜索到port端口 并更改为6380</span><br><span class="line"><span class="meta">#</span> 保存退出</span><br><span class="line"><span class="meta">#</span> 修改master bind</span><br><span class="line">vim redis.conf</span><br><span class="line">/bind    # 搜索bind改为如下</span><br><span class="line">bind 0.0.0.0</span><br><span class="line"><span class="meta">#</span> 保存退出</span><br><span class="line"><span class="meta">#</span> 分别启动两个redis服务</span><br><span class="line">./src/redis-server redis.conf $</span><br><span class="line">./src/redis-server redis-slave1.conf $</span><br></pre></td></tr></table></figure>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/04/13/Docker入门/" class="prev">PREV</a><a href="/2018/03/24/分布式事务/" class="next">NEXT</a></div><div class="copyright"><p>© 2018 <a href="http://www.idlforever.cn">chuckie-xch</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

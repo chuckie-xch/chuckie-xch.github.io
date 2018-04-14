@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Docker入门 · 夏天的博客</title><meta name="description" content="Docker入门 - chuckie-xch"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.idlforever.cn/atom.xml" title="夏天的博客"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Docker入门</h1><div class="post-info">Apr 13, 2018</div><div class="post-content"><p>查看有哪些镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p>获取镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>等待下载完成，获取一个官方的<code>ubuntu 16.04</code>的官方镜像。</p>
+<p>然后，使用docker run命令可以从一个镜像运行一个包含一个主进程的容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name first ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>命令解释：</p>
+<ul>
+<li>docker run ：从一个镜像运行一个容器。</li>
+<li>-ti（terminal interactive）：进入容器的交互式终端。</li>
+<li>–name：指定容器的名字，后面的first就是容器的命名。</li>
+<li>ubuntu:16.04：指明从哪个镜像运行容器，ubuntu指仓库名，16.04是标签。</li>
+<li>bash：指明使用bash终端。</li>
+</ul>
+</blockquote>
+<p>现在，可以在容器里执行一些命令，就好像在一个全新的系统中运行指令一样，比如创建文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch hello-docker.txt</span><br></pre></td></tr></table></figure>
+<p>现在，可以通过输入exit命令退出运行的容器，其实就是终止了容器。</p>
+<p>如果将来，你希望每次运行一个新容器都包含刚刚创建的hello-docker.txt，可以把容器提交为一个镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit first my-image:v1.0</span><br></pre></td></tr></table></figure>
+<p>注意：这种创建镜像的方式并不推荐，应该避免通过这种方式创建镜像。</p>
+<p>后台运行：docker run -d …</p>
+<p>删除容器：docker rm …</p>
+<h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><ul>
+<li>ssh登录</li>
+<li>attach和exec</li>
+<li>nesenter</li>
+</ul>
+<p>在后台运行一个新的容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -ti --name background ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<p>使用如下命令进入容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec  -ti backgroud bash</span><br></pre></td></tr></table></figure>
+<p>第二种方式是使用attach命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker attach background</span><br></pre></td></tr></table></figure>
+<p>然后按两次回车即可进入容器。</p>
+<h4 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h4><ul>
+<li>进入容器，然后输入命令：<code>exit</code></li>
+<li>通过kill命令</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker kill background</span><br></pre></td></tr></table></figure>
+<h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+<h4 id="其他常用命令"><a href="#其他常用命令" class="headerlink" title="其他常用命令"></a>其他常用命令</h4><ul>
+<li><p>查看容器详细信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看容器最近一个进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker top background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>停止一个正在运行的容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继续一个被停止的容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>暂停一个一个容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pause background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消暂停</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker unpause background</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>终止一个容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker kill background</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<h4 id="Docker数据管理的方式"><a href="#Docker数据管理的方式" class="headerlink" title="Docker数据管理的方式"></a>Docker数据管理的方式</h4><h5 id="数据卷（Data-Volume）"><a href="#数据卷（Data-Volume）" class="headerlink" title="数据卷（Data Volume）"></a>数据卷（Data Volume）</h5><p>数据卷的使用其实和Linux挂载文件目录是很相似的，数据卷就是一个可以供容器使用的特殊目录。</p>
+<ul>
+<li><strong>创建一个数据卷</strong></li>
+</ul>
+<p>在使用<code>docker run</code>命令的时候使用-v参数为容器挂载一个数据卷：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name hasVolume -v /myDir ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<p>然后可以看到我们的容器的目录里多了一个myDir的目录，这个就是数据卷：</p>
+<p><a href="https://i.loli.net/2018/04/14/5ad19e97dbef4.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/04/14/5ad19e97dbef4.png" alt="volume-1.png"></a></p>
+<ul>
+<li><strong>删除一个数据卷</strong></li>
+</ul>
+<p>数据卷的生命周期是独立于容器的，所以要删除数据卷，必须在删除容器的时候加上-v参数，</p>
+<p>注意：如果你删除了挂载某个数据卷的全部容器，而没有使用-v清理数据卷，之后再想清除这个数据卷将会非常麻烦，所以，尽量在删除最后一个挂载该数据卷的容器时加上-v参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm -v hasVolume</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>挂载一个主机目录到数据卷</strong></li>
+</ul>
+<p>使用如下命令挂载一个主机目录到数据卷：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name volume1 -v /home/xch/:/myShared ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<p>意思是，将宿主机上的/home/xch挂载到容器的myShared目录下，Docker挂载目录的默认权限是读写，可以通过<code>:ro</code>命令设置为只读：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name volume2 -v /home/xch/:/myShared:ro ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<h5 id="数据卷容器"><a href="#数据卷容器" class="headerlink" title="数据卷容器"></a>数据卷容器</h5><p>数据卷容器就是一个普通的容器，只不过这个容器是专门作为数据卷供其他容器挂载。</p>
+<p>首先，运行容器时创建一个数据卷容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name v0 -d -v /data-volume ubuntu:16.04</span><br></pre></td></tr></table></figure>
+<p>接着，创建一个新的容器挂载刚才创建的数据卷容器中的数据卷，使用–volumes-from参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name v1 --volumes-from v0 ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>数据卷容器被挂载时不必保证运行</li>
+<li>如果删除了v0，v1数据卷并不会被清理，应当运行docker rm -v命令</li>
+</ul>
+</blockquote>
+<h3 id="Docker网络"><a href="#Docker网络" class="headerlink" title="Docker网络"></a>Docker网络</h3><h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>由于ubuntu的官方镜像并没有默认安装ping，ifconfig等网络工具，所以需要创建一个具备一定网络功能的镜像（目前先使用容器提交的方式，后续再介绍dockerfile创建镜像）。</p>
+<p>首先，从之前的的ubuntu:16.04创建一个容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name network-example ubuntu:16.04 bash</span><br></pre></td></tr></table></figure>
+<p>然后依次执行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install net-tools</span><br><span class="line">apt install iputils-ping</span><br><span class="line">apt install apache2</span><br><span class="line">apt install apache2-utils</span><br><span class="line">apt install openssh-server</span><br><span class="line">apt install openssh-client</span><br></pre></td></tr></table></figure>
+<p>接着，使用vim修改：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<p>将<code>PermitRootLogin</code>内容改为yes，保存退出。</p>
+<p>输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure>
+<p>输入root用户的新密码并确认。（密码要牢记！）</p>
+<p>然后退出容器。然后基于这个容器提交新的镜像：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit  -m 'my network example' network-example net:v1.0</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：</p>
+<ul>
+<li>-m参数是添加一个说明</li>
+<li>然后是容器名或id</li>
+<li>最后是新镜像名和标签</li>
+</ul>
+</blockquote>
+<h4 id="端口暴露"><a href="#端口暴露" class="headerlink" title="端口暴露"></a>端口暴露</h4><p>使用<code>-p</code>参数进行端口映射，格式如下：</p>
+<blockquote>
+<p>-p hostPort：containerPort 映射所有ip地址上的指定端口到容器内部</p>
+<p>-p  ip:hostPort:containerPort 映射指定ip地址上的指定端口到容器内部</p>
+<p>-p ip::containerPort  映射指定ip上的任意端口到容器内部</p>
+</blockquote>
+<p>比如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name web -p 80:80 net:v1.0 bash</span><br></pre></td></tr></table></figure>
+<p>这个命令启动一个容器，并映射宿主机所有ip的80端口到容器的80端口。</p>
+<p>我们已经安装了apache服务器，启动它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apache2ctl start</span><br></pre></td></tr></table></figure>
+<p>然后查看容器的ip地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+<p><a href="https://i.loli.net/2018/04/14/5ad1b93b4e7e4.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/04/14/5ad1b93b4e7e4.png" alt="net-work.png"></a></p>
+<p>这里我的是172.17.0.4，此时打开宿主机的浏览器，输入url:172.17.0.4，就可以访问到apache服务器的主页了。</p>
+<p>端口暴露不仅可以把容器作为Web服务器使用，还可以通过网络让不同的容器相互通信。Docker默认使用tcp协议在容器间进行网络通信。如果要使用udp，可以使用如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name web -p 80:80/ud net:v1.0 bash</span><br></pre></td></tr></table></figure>
+<h4 id="容器互联"><a href="#容器互联" class="headerlink" title="容器互联"></a>容器互联</h4><p>容器互联可以不使用端口暴露就让容器之间可以相互通信。</p>
+<p>首先，创建一个源容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti -d --name source net:v1.0</span><br></pre></td></tr></table></figure>
+<p>然后运行另一个容器，使用–link参数连接第一个容器:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name receiver --link source:sender net:v1.0 bash</span><br></pre></td></tr></table></figure>
+<p>这里的–link source:sender 的意思是把名为source的容器连接到别名sender，然后就可在第二个容器以sender这个名字和第一个容器通信，比如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping sender</span><br></pre></td></tr></table></figure>
+<p>因为系统把这个别名添加到了<code>/etc/hosts</code>中。</p>
+<h4 id="SSH登录容器"><a href="#SSH登录容器" class="headerlink" title="SSH登录容器"></a>SSH登录容器</h4><p>首先运行一个容器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti --name ssh -p 6667:22 net:v1.0 bash</span><br></pre></td></tr></table></figure>
+<p>然后在容器里启动ssh服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh start</span><br></pre></td></tr></table></figure>
+<p>查看ip地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+<p><a href="https://i.loli.net/2018/04/14/5ad1be908a2d3.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/04/14/5ad1be908a2d3.png" alt="ifconfig.png"></a></p>
+<p>然后在新的终端里运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@172.17.0.5</span><br></pre></td></tr></table></figure>
+<p>然后就可以顺利进入容器了。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/03/28/Redis主从复制/" class="next">NEXT</a></div><div class="copyright"><p>© 2018 <a href="http://www.idlforever.cn">chuckie-xch</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

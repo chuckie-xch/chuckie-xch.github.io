@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java代码规范 · 夏天的博客</title><meta name="description" content="Java代码规范 - chuckie-xch"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.idlforever.cn/atom.xml" title="夏天的博客"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java代码规范</h1><div class="post-info">Mar 7, 2018</div><div class="post-content"><p>代码拥有统一的格式和规范，既便于代码的逻辑清晰，又便于维护，好的编码规范可以尽可能的减少一个软件的维护成本。下面从三个方面进行约束：服务端口规范，方法命名规范，接口定义规范。</p>
+<a id="more"></a>
+<h3 id="服务端口规范"><a href="#服务端口规范" class="headerlink" title="服务端口规范"></a>服务端口规范</h3><ul>
+<li>每个业务模块定义一个模块ID，如账户模块：20</li>
+<li>Web模块：<ul>
+<li>Server Port：模块ID+80，如2080</li>
+<li>Manager Port：模块ID+81，如2181</li>
+</ul>
+</li>
+<li>Server模块：<ul>
+<li>Server Port：模块ID+09，如2009</li>
+<li>Dubbo Port：模块ID+08，如2008</li>
+</ul>
+</li>
+<li>MySQL：模块ID+06，如2006</li>
+</ul>
+<h3 id="方法命名规范"><a href="#方法命名规范" class="headerlink" title="方法命名规范"></a>方法命名规范</h3><p>总体上根据阿里巴巴编码规范进行约束。</p>
+<ul>
+<li>新增：save…</li>
+<li>修改：update…</li>
+<li>查询：find…，如findByName</li>
+<li>查询所有：findAll</li>
+<li>分页查询：find…ByPage</li>
+<li>删除：delete</li>
+<li>批量删除：batchDelete</li>
+<li>业务方法：动词+名词组合</li>
+<li>kafka主题：topic-业务名称</li>
+<li>kafka消费组：group-模块名称</li>
+</ul>
+<h3 id="接口定义规范"><a href="#接口定义规范" class="headerlink" title="接口定义规范"></a>接口定义规范</h3><p>统一返回格式：</p>
+<ul>
+<li>BaseResult</li>
+<li>GeneralReulst<t></t></li>
+<li>ListResult</li>
+</ul>
+<p>其他：</p>
+<ul>
+<li>新增接口理应返回新增对象。</li>
+<li>不允许把Json，Map这类对象传到Service中去，也不允许Service返回Json，Map这类对象。</li>
+<li>Controller尽量少打日志，Controller里的日志通过AOP去打，除非第三方接口回调。</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/03/10/Angualr最佳实践/" class="prev">PREV</a><a href="/2018/01/29/Servlet3-0规范/" class="next">NEXT</a></div><div class="copyright"><p>© 2018 <a href="http://www.idlforever.cn">chuckie-xch</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

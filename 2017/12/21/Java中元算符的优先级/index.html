@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java中元算符的优先级 · 夏天的博客</title><meta name="description" content="Java中元算符的优先级 - chuckie-xch"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.idlforever.cn/atom.xml" title="夏天的博客"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java中元算符的优先级</h1><div class="post-info">Dec 21, 2017</div><div class="post-content"><h1 id="Java中运算符优先级"><a href="#Java中运算符优先级" class="headerlink" title="Java中运算符优先级"></a>Java中运算符优先级</h1><h3 id="1-问题引出"><a href="#1-问题引出" class="headerlink" title="1. 问题引出"></a>1. 问题引出</h3><p>今天在写ArrayList的扩容时，遇到这么一个错误:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line"><span class="keyword">int</span> newCapacity = oldCapacity + oldCapacity &gt;&gt; <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>结果在执行的时候报了ArrayIndexOutOfBoundsException数组下标异常，通过debug发现newCapacity的值还是原来的值，发现是优先级导致的问题。<strong>加减乘除</strong>的优先级是高于<strong>位移</strong>运算符的。就此来回顾下Java中运算符优先级的问题。</p>
+<h3 id="2-关于Java中的优先级"><a href="#2-关于Java中的优先级" class="headerlink" title="2. 关于Java中的优先级"></a>2. 关于Java中的优先级</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">优先级</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">结合性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">()[]</td>
+<td style="text-align:center">从左到右</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">! + (正) -(负) ~ ++ –</td>
+<td style="text-align:center">从右向左</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">* / %</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">+(加) -(减)</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">&lt;&lt; &gt;&gt; &gt;&gt;&gt;</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">&lt; &lt;= &gt; &gt;= instanceof</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">== !=</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">&amp;(按位与)</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">^</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">\</td>
+<td style="text-align:center"></td>
+<td>从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:center">&amp;&amp;</td>
+<td style="text-align:center">从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">\</td>
+<td style="text-align:center">\</td>
+<td></td>
+<td>从左向右</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">从右向左</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:center">= += -+ *= /=</td>
+<td style="text-align:center">从右向左</td>
+</tr>
+</tbody>
+</table>
+<p>口诀：</p>
+<blockquote>
+<p>单目乘除为关系，逻辑三目后赋值。</p>
+</blockquote>
+<p>单目：单目运算符+ –(负数) ++ – 等<br>乘除：算数单目运算符* / % + -<br>为：位移单目运算符&lt;&lt; &gt;&gt;<br>关系：关系单目运算符&gt; &lt; &gt;= &lt;= == !=<br>逻辑：逻辑单目运算符&amp;&amp; || &amp; | ^<br>三目：三目单目运算符A &gt; B ? X : Y<br>后：无意义，仅仅为了凑字数<br>赋值：赋值=</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2017/12/25/Git的常用命令/" class="prev">PREV</a><a href="/2017/12/20/ArrayList中的elementData为什么用transient/" class="next">NEXT</a></div><div class="copyright"><p>© 2018 <a href="http://www.idlforever.cn">chuckie-xch</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>
