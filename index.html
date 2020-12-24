@@ -1,8 +1,191 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 夏天的博客</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.idlforever.cn/atom.xml" title="夏天的博客"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link active">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/chuckie-xch" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2018/04/13/Docker入门/" class="post-title-link">Docker入门</a></h2><div class="post-info">Apr 13, 2018</div><div class="post-content"><p>查看有哪些镜像：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
-<p>获取镜像：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure></div><a href="/2018/04/13/Docker入门/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2018/03/28/Redis主从复制/" class="post-title-link">Redis主从复制</a></h2><div class="post-info">Mar 28, 2018</div><div class="post-content"><p>Redis是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，hyperloglogs等数据类型。内置复制、Lua脚本、LRU收回、事务以及不同级别磁盘持久化功能，同时通过Redis Sentinel提供高可用，通过Redis Cluster提供自动分区。</p></div><a href="/2018/03/28/Redis主从复制/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2018/03/24/分布式事务/" class="post-title-link">分布式事务</a></h2><div class="post-info">Mar 24, 2018</div><div class="post-content"><p><strong>什么是事务</strong></p>
-<p>事务是指一组业务操作，要么全部成功，要么全部失败。<br></div><a href="/2018/03/24/分布式事务/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2018/03/16/TreeMap源码分析/" class="post-title-link">TreeMap源码分析</a></h2><div class="post-info">Mar 16, 2018</div><div class="post-content"><p><code>TreeMap</code>是基于红黑树实现的。并且实现了<code>SortedMap</code>接口，是可排序的，如果构造器没有传入比较器，则根据键按自然排序。<code>TreeMap</code>并不是线程安全的，如果高并发写的情况下需要开发人员自行实现同步，或者通过以下代码，包装成一个同步的<code>SortedMap</code>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SortedMap map = Collections.synchronizedSortedMap(<span class="keyword">new</span> TreeMap());</span><br></pre></td></tr></table></figure></div><a href="/2018/03/16/TreeMap源码分析/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2018/03/14/红黑树深入剖析/" class="post-title-link">红黑树深入剖析</a></h2><div class="post-info">Mar 14, 2018</div><div class="post-content"><p>红黑数是一种平衡的二叉搜索树，因此我们从二叉树开始讨论。</p>
-<p><strong>BST</strong></p>
-<p>二叉查找树（BST）是一二叉树，左节点比父结点的值小。因此，查找的复杂度取决于树的高度，理想情况下，二叉树的增删改查的时间复杂度是O（logN）（N为结点数），最坏的情况下是O（N）,当高度为logN+1得时候，这颗二叉树就是平衡二叉树。</p></div><a href="/2018/03/14/红黑树深入剖析/" class="read-more">...more</a></article></li></ul></main><footer><div class="paginator"><a href="/page/2/" class="next">NEXT</a></div><div class="copyright"><p>© 2018 <a href="http://www.idlforever.cn">chuckie-xch</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>婧婧，圣诞快乐</title>
+
+
+
+	<style>
+		*{margin:0; padding:0;}
+		body{ background-color: #1E1E1E; 		}
+	</style>
+</head>
+<body>
+
+
+<audio autoplay="autopaly">
+<source src="http://t.hunlipic.com/?wky" type="audio/mp3"/>
+</audio>
+
+
+	<canvas id="drawHeart"></canvas>
+
+	<script>
+		var hearts = [];
+		var canvas = document.getElementById('drawHeart');
+		var wW = window.innerWidth;
+		var wH = window.innerHeight;
+		// 创建画布
+		var ctx = canvas.getContext('2d');
+		// 创建图片对象
+		var heartImage = new Image();
+		heartImage.src = 'http://h5.hunlipic.com/biaobai_aixin/img/heart.svg';
+		var num = 100;
+
+		init();
+
+		window.addEventListener('resize', function(){
+			 wW = window.innerWidth;
+			 wH = window.innerHeight;
+		});
+		// 初始化画布大小
+		function init(){
+			canvas.width = wW;
+			canvas.height = wH;
+			for(var i = 0; i < num; i++){
+				hearts.push(new Heart(i%5));
+			}
+			requestAnimationFrame(render);
+		}
+
+		function getColor(){
+			var val = Math.random() * 10;
+			if(val > 0 && val <= 1){
+				return '#00f';
+			} else if(val > 1 && val <= 2){
+				return '#f00';
+			} else if(val > 2 && val <= 3){
+				return '#0f0';
+			} else if(val > 3 && val <= 4){
+				return '#368';
+			} else if(val > 4 && val <= 5){
+				return '#666';
+			} else if(val > 5 && val <= 6){
+				return '#333';
+			} else if(val > 6 && val <= 7){
+				return '#f50';
+			} else if(val > 7 && val <= 8){
+				return '#e96d5b';
+			} else if(val > 8 && val <= 9){
+				return '#5be9e9';
+			} else {
+				return '#d41d50';
+			}
+		}
+
+		function getText(){
+			var val = Math.random() * 10;
+			if(val > 1 && val <= 3){
+				return '圣诞快乐';
+			} else if(val > 3 && val <= 5){
+				return '张婧';
+			} else if(val > 5 && val <= 8){
+				return '喜欢你';
+			} else{
+				return 'I Love You';
+			}
+		}
+
+		function Heart(type){
+			this.type = type;
+			// 初始化生成范围
+			this.x = Math.random() * wW;
+			this.y = Math.random() * wH;
+
+			this.opacity = Math.random() * .5 + .5;
+
+			// 偏移量
+			this.vel = {
+				x: (Math.random() - .5) * 5,
+				y: (Math.random() - .5) * 5
+			}
+
+			this.initialW = wW * .5;
+			this.initialH = wH * .5;
+			// 缩放比例
+			this.targetScale = Math.random() * .15 + .02; // 最小0.02
+			this.scale = Math.random() * this.targetScale;
+
+			// 文字位置
+			this.fx = Math.random() * wW;
+			this.fy = Math.random() * wH;
+			this.fs = Math.random() * 10;
+			this.text = getText();
+
+			this.fvel = {
+				x: (Math.random() - .5) * 5,
+				y: (Math.random() - .5) * 5,
+				f: (Math.random() - .5) * 2
+			}
+		}
+
+		Heart.prototype.draw = function(){
+			ctx.save();
+			ctx.globalAlpha = this.opacity;
+			ctx.drawImage(heartImage, this.x, this.y, this.width, this.height);
+			ctx.scale(this.scale + 1, this.scale + 1);
+  			if(!this.type){
+  				// 设置文字属性
+				ctx.fillStyle = getColor();
+	  			ctx.font = 'italic ' + this.fs + 'px sans-serif';
+	  			// 填充字符串
+	  			ctx.fillText(this.text, this.fx, this.fy);
+  			}
+			ctx.restore();
+		}
+		Heart.prototype.update = function(){
+			this.x += this.vel.x;
+			this.y += this.vel.y;
+
+			if(this.x - this.width > wW || this.x + this.width < 0){
+				// 重新初始化位置
+				this.scale = 0;
+				this.x = Math.random() * wW;
+				this.y = Math.random() * wH;
+			}
+			if(this.y - this.height > wH || this.y + this.height < 0){
+				// 重新初始化位置
+				this.scale = 0;
+				this.x = Math.random() * wW;
+				this.y = Math.random() * wH;
+			}
+
+			// 放大
+			this.scale += (this.targetScale - this.scale) * .1;
+			this.height = this.scale * this.initialH;
+			this.width = this.height * 1.4;
+
+			// -----文字-----
+			this.fx += this.fvel.x;
+			this.fy += this.fvel.y;
+			this.fs += this.fvel.f;
+
+			if(this.fs > 50){
+				this.fs = 2;
+			}
+
+			if(this.fx - this.fs > wW || this.fx + this.fs < 0){
+				// 重新初始化位置
+				this.fx = Math.random() * wW;
+				this.fy = Math.random() * wH;
+			}
+			if(this.fy - this.fs > wH || this.fy + this.fs < 0){
+				// 重新初始化位置
+				this.fx = Math.random() * wW;
+				this.fy = Math.random() * wH;
+			}
+		}
+
+		function render(){
+			ctx.clearRect(0, 0, wW, wH);
+			for(var i = 0; i < hearts.length; i++){
+				hearts[i].draw();
+				hearts[i].update();
+			}
+			requestAnimationFrame(render);
+		}
+	</script>
+</body>
+</html>
